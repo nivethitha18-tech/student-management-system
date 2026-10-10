@@ -1,0 +1,92 @@
+/* General page design */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f5f9;
+    color: #1e293b;
+    margin: 0;
+    padding: 30px;
+}
+
+/* Main headings */
+h1 {
+    color: #17365d;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+h2 {
+    color: #24527a;
+}
+
+/* Paragraphs */
+p {
+    text-align: center;
+    font-size: 16px;
+}
+
+/* Buttons */
+button {
+    background-color: #17365d;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover {
+    background-color: #2563a6;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+}
+
+/* Forms */
+form {
+    background-color: white;
+    max-width: 500px;
+    margin: 25px auto;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Student table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    margin-top: 25px;
+}
+
+th {
+    background-color: #17365d;
+    color: white;
+}
+
+th,
+td {
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    text-align: left;
+}
+
+/* Table row hover */
+tr:hover {
+    background-color: #eaf2f8;
+}

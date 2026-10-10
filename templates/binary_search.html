@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Binary Search Student</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>Binary Search Student</h1>
+    <p>Search for a student using the Binary Search Algorithm.</p>
+
+    <form method="POST">
+        <label>Student ID:</label>
+        <input type="text" name="student_id" placeholder="Enter Student ID" required>
+        <button type="submit">Search Student</button>
+    </form>
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    {% if student %}
+        <h2>Student Found</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Year</th>
+                <th>Marks</th>
+            </tr>
+            <tr>
+                <td>{{ student[0] }}</td>
+                <td>{{ student[1] }}</td>
+                <td>{{ student[2] }}</td>
+                <td>{{ student[3] }}</td>
+                <td>{{ student[4] }}</td>
+                <td>{{ student[5] }}</td>
+            </tr>
+        </table>
+    {% endif %}
+
+    <p><a href="/">Back to Home</a></p>
+
+</body>
+</html>
