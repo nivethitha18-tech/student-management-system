@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="home-page">
+
+    <header class="dashboard-header">
+        <div class="brand">
+            <div class="brand-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24"
+         fill="none" stroke="#111827" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round"
+         aria-label="Graduation cap" role="img">
+        <path d="M2 9l10-5 10 5-10 5L2 9z"/>
+        <path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/>
+        <path d="M22 9v6"/>
+    </svg>
+</div>
+            <div>
+                <h2>StudentHub</h2>
+                <p>Student Management System</p>
+            </div>
+        </div>
+        <span class="header-label">
+    <svg width="16" height="16" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true">
+        <rect x="3" y="3" width="8" height="8" rx="1"/>
+        <rect x="13" y="3" width="8" height="5" rx="1"/>
+        <rect x="13" y="10" width="8" height="11" rx="1"/>
+        <rect x="3" y="13" width="8" height="8" rx="1"/>
+    </svg>
+    DASHBOARD
+</span>
+    </header>
+
+    <main class="dashboard-main">
+
+        <section class="welcome-section">
+            <p class="eyebrow">STUDENT MANAGEMENT PORTAL</p>
+            <h1>Welcome to StudentHub</h1>
+            <p class="welcome-text">
+                Manage student records, search information and organize
+                student data easily from one place.
+            </p>
+        </section>
+
+        <!-- Dashboard Statistics -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <h3>Total Students</h3>
+                <p>{{ total_students }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Departments</h3>
+                <p>{{ total_departments }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Academic Years</h3>
+                <p>{{ total_years }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Average Marks</h3>
+                <p>{{ average_marks }}</p>
+            </div>
+        </section>
+
+        <section class="feature-section">
+            <div class="section-heading">
+                <div>
+                    <h2>Manage Your Students</h2>
+                    <p>Choose an option to get started.</p>
+                </div>
+            </div>
+
+            <div class="feature-grid">
+
+                <a href="/add-student" class="feature-card">
+                    <div class="feature-icon icon-blue">＋</div>
+                    <h3>Add Student</h3>
+                    <p>Register a new student and enter their information.</p>
+                    <span class="card-action">Add a record →</span>
+                </a>
+
+                <a href="/students" class="feature-card">
+                    <div class="feature-icon icon-purple">▤</div>
+                    <h3>View Students</h3>
+                    <p>View the student records saved in your system.</p>
+                    <span class="card-action">View records →</span>
+                </a>
+
+                <a href="/search" class="feature-card">
+                    <div class="feature-icon icon-green">⌕</div>
+                    <h3>Search Student</h3>
+                    <p>Find a student using their student ID.</p>
+                    <span class="card-action">Search records →</span>
+                </a>
+
+                <a href="/sort" class="feature-card">
+                    <div class="feature-icon icon-orange">A↕Z</div>
+                    <h3>Sort Students A–Z</h3>
+                    <p>Arrange student names in alphabetical order.</p>
+                    <span class="card-action">Sort records →</span>
+                </a>
+
+                <a href="/binary-search" class="feature-card">
+                    <div class="feature-icon icon-pink">⌕</div>
+                    <h3>Binary Search</h3>
+                    <p>Find a student using the binary search method.</p>
+                    <span class="card-action">Find a student →</span>
+                </a>
+
+            </div>
+        </section>
+
+        <footer class="dashboard-footer">
+            <p>StudentHub · Cloud-Based Student Information Management System</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>

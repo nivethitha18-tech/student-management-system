@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Students</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -9,6 +11,29 @@
 
     <h1>Student Details</h1>
 
+    <!-- Sorting Controls -->
+<h3>Sort Students</h3>
+
+<form action="{{ url_for('sort_students') }}" method="GET">
+    <label for="by">Sort by:</label>
+
+    <select name="by" id="by">
+        <option value="student_id">Student ID</option>
+        <option value="year">Academic Year</option>
+        <option value="department">Department</option>
+        <option value="name">Name</option>
+    </select>
+
+    <select name="order" id="order">
+        <option value="asc">Ascending (Low to High / A–Z)</option>
+        <option value="desc">Descending (High to Low / Z–A)</option>
+    </select>
+
+    <button type="submit">Sort</button>
+</form>
+
+<br>
+
     <table border="1">
         <tr>
             <th>Student ID</th>
@@ -16,6 +41,8 @@
             <th>Department</th>
             <th>Year</th>
             <th>Marks</th>
+            <th>Result</th>
+            <th>Actions</th>
         </tr>
 
         {% for student in students %}
@@ -25,10 +52,35 @@
             <td>{{ student[3] }}</td>
             <td>{{ student[4] }}</td>
             <td>{{ student[5] }}</td>
+            <td>
+             {% if student[5]|float < 40 %}
+                 <span class="result-badge fail">Fail</span>
+             {% elif student[5]|float < 80 %}
+                 <span class="result-badge pass">Pass</span>
+             {% else %}
+                 <span class="result-badge high-scorer">High Scorer</span>
+             {% endif %}
+            </td>
+
+            <td>
+                <a href="{{ url_for('edit_student', student_id=student[0]) }}">
+                    <button type="button">Edit</button>
+                </a>
+
+                <form action="{{ url_for('delete_student', student_id=student[0]) }}"
+                      method="POST"
+                      style="display: inline;"
+                      onsubmit="return confirm('Are you sure you want to delete this student?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
 
     </table>
+
+    <br>
+    <a href="{{ url_for('home') }}">Back to Dashboard</a>
 
 </body>
 </html>

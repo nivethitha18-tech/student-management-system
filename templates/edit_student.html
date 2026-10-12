@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>Edit Student Details</h1>
+
+    {% if message %}
+        <p style="color: red; font-weight: bold;">
+            {{ message }}
+        </p>
+    {% endif %}
+
+    <form method="POST" novalidate>
+        <label>Student ID:</label>
+        <input type="text" name="student_id"
+               value="{{ request.form.get('student_id', student[1]) }}">
+        <br><br>
+
+        <label>Name:</label>
+        <input type="text" name="name"
+               value="{{ request.form.get('name', student[2]) }}">
+        <br><br>
+
+        <label>Department:</label>
+        <input type="text" name="department"
+               value="{{ request.form.get('department', student[3]) }}">
+        <br><br>
+
+        <label>Year:</label>
+        <input type="text" name="year"
+               value="{{ request.form.get('year', student[4]) }}">
+        <br><br>
+
+        <label>Marks:</label>
+        <input type="number" name="marks" min="0" max="100" step="any"
+               value="{{ request.form.get('marks', student[5]) }}">
+        <br><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('view_students') }}">Back to Student Details</a>
+
+</body>
+</html>

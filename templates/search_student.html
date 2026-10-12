@@ -1,56 +1,228 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Search Student</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Student Search</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .search-layout {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+            margin: 20px 0;
+        }
+
+        .search-panel {
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 0;
+        }
+
+        .result-section {
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        .result-table th,
+        .result-table td {
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            text-align: left;
+            overflow-wrap: anywhere;
+        }
+
+        .result-table th {
+            background-color: #172554;
+            color: white;
+        }
+
+        .no-results {
+            color: red;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 700px) {
+            .search-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Search Student</h1>
+    <h1>Advanced Student Search</h1>
+    
+<div class="search-layout">
 
-    <form method="POST" action="/search">
+    <section class="search-panel">
+        <h2>Student Search</h2>
+        <p>Search students by ID, name, department, or academic year.</p>
+    
+        <form method="POST" action="{{ url_for('search_student') }}">
+                <input type="hidden" name="form_type"
+                       value="student_search">
 
-        <label>Enter Student ID:</label>
+                <input
+                    type="text"
+                    name="search_query"
+                    placeholder="Enter ID, name, department, or year"
+                    value="{{ search_query }}"
+                >
 
-        <input type="text" name="student_id" required>
+                <button type="submit">Search Student</button>
+            </form>
+    </section>
 
-        <br><br>
+        <section class="search-panel">
+            <h2>Marks Filter</h2>
+            <p>Select a marks condition to find matching students.</p>
 
-        <button type="submit">Search</button>
+            <form method="POST" action="{{ url_for('search_student') }}">
+                <input type="hidden" name="form_type"
+                       value="marks_filter">
 
-    </form>
+                <label for="marks_condition">Marks condition:</label>
+
+                <select name="marks_condition" id="marks_condition" required>
+                    <option value="">-- Select condition --</option>
+                    <option value="equal" {% if marks_condition == 'equal' %}selected{% endif %}>Equal to</option>
+                    <option value="not_equal" {% if marks_condition == 'not_equal' %}selected{% endif %}>Not equal to</option>
+                    <option value="greater" {% if marks_condition == 'greater' %}selected{% endif %}>Greater than</option>
+                    <option value="greater_equal" {% if marks_condition == 'greater_equal' %}selected{% endif %}>Greater than or equal to</option>
+                    <option value="less" {% if marks_condition == 'less' %}selected{% endif %}>Less than</option>
+                    <option value="less_equal" {% if marks_condition == 'less_equal' %}selected{% endif %}>Less than or equal to</option>
+                    <option value="between" {% if marks_condition == 'between' %}selected{% endif %}>Between two marks</option>
+                    <option value="outside" {% if marks_condition == 'outside' %}selected{% endif %}>Outside a range</option>
+                    <option value="at_least" {% if marks_condition == 'at_least' %}selected{% endif %}>At least</option>
+                    <option value="at_most" {% if marks_condition == 'at_most' %}selected{% endif %}>At most</option>
+                    <option value="zero_to" {% if marks_condition == 'zero_to' %}selected{% endif %}>From 0 to a chosen mark</option>
+                    <option value="from_to_100" {% if marks_condition == 'from_to_100' %}selected{% endif %}>From a chosen mark to 100</option>
+                    <option value="even" {% if marks_condition == 'even' %}selected{% endif %}>Even-numbered marks</option>
+                    <option value="odd" {% if marks_condition == 'odd' %}selected{% endif %}>Odd-numbered marks</option>
+                </select>
+
+                <label for="mark_value">Required mark:</label>
+                <input
+                    type="number"
+                    id="mark_value"
+                    name="mark_value"
+                    min="0"
+                    max="100"
+                    step="any"
+                    value="{{ mark_value }}"
+                    placeholder="Enter marks (0–100)"
+                >
+
+                <label for="second_mark">Second mark (for range only):</label>
+                <input
+                    type="number"
+                    id="second_mark"
+                    name="second_mark"
+                    min="0"
+                    max="100"
+                    step="any"
+                    value="{{ second_mark }}"
+                    placeholder="Enter second mark"
+                >
+
+                <button type="submit">Filter Students</button>
+            </form>
+        </section>
+
+    </div>
+
+    {% if search_message or search_results %}
+    <section class="result-section">
+        <h2>Student Search Results</h2>
+
+        {% if search_message %}
+            <p class="no-results">{{ search_message }}</p>
+        {% endif %}
+
+        {% if search_results %}
+        <div class="table-wrapper">
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Year</th>
+                        <th>Marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in search_results %}
+                    <tr>
+                        <td>{{ student[1] }}</td>
+                        <td>{{ student[2] }}</td>
+                        <td>{{ student[3] }}</td>
+                        <td>{{ student[4] }}</td>
+                        <td>{{ student[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    {% if marks_message or marks_results %}
+    <section class="result-section">
+        <h2>Marks Filter Results</h2>
+
+        {% if marks_message %}
+            <p class="no-results">{{ marks_message }}</p>
+        {% endif %}
+
+        {% if marks_results %}
+        <div class="table-wrapper">
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Year</th>
+                        <th>Marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in marks_results %}
+                    <tr>
+                        <td>{{ student[1] }}</td>
+                        <td>{{ student[2] }}</td>
+                        <td>{{ student[3] }}</td>
+                        <td>{{ student[4] }}</td>
+                        <td>{{ student[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </section>
+    {% endif %}
 
     <br>
-
-    <a href="/">
-        <button type="button">Back to Home</button>
-    </a>
-
-    {% if student %}
-        <h2>Student Found!</h2>
-
-        <table border="1">
-            <tr>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Year</th>
-                <th>Marks</th>
-            </tr>
-
-            <tr>
-                <td>{{ student[1] }}</td>
-                <td>{{ student[2] }}</td>
-                <td>{{ student[3] }}</td>
-                <td>{{ student[4] }}</td>
-                <td>{{ student[5] }}</td>
-            </tr>
-        </table>
-
-    {% elif message %}
-        <p>{{ message }}</p>
-    {% endif %}
+    <a href="{{ url_for('home') }}">Back to Dashboard</a>
 
 </body>
 </html>

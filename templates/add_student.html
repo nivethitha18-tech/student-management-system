@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Student</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -9,36 +11,39 @@
 
     <h1>Add Student</h1>
 
-    <form method="POST" action="/add-student">
+    {% if message %}
+    <p class="message
+        {% if 'Error:' in message %}
+            error-message
+        {% else %}
+            success-message
+        {% endif %}">
+        {{ message }}
+    </p>
+{% endif %}
+
+    <form method="POST" action="{{ url_for('add_student') }}" novalidate>
 
         <label>Student ID:</label>
-        <input type="text" name="student_id" required>
-
-        <br><br>
+        <input type="text" name="student_id">
 
         <label>Name:</label>
-        <input type="text" name="name" required>
-
-        <br><br>
+        <input type="text" name="name">
 
         <label>Department:</label>
-        <input type="text" name="department" required>
-
-        <br><br>
+        <input type="text" name="department">
 
         <label>Year:</label>
-        <input type="text" name="year" required>
-
-        <br><br>
+        <input type="text" name="year">
 
         <label>Marks:</label>
-        <input type="number" name="marks" required>
-
-        <br><br>
+        <input type="number" name="marks" min="0" max="100" step="any">
 
         <button type="submit">Save Student</button>
 
     </form>
+
+    <a href="{{ url_for('home') }}">Back to Dashboard</a>
 
 </body>
 </html>
